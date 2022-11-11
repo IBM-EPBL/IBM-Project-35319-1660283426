@@ -1,0 +1,54 @@
+
+from google.colab import drive
+drive.mount('/content/drive/')
+Mounted at /content/drive/
+!unzip "/content/drive/MyDrive/dataset1.zip"
+importing Required libraries
+
+import keras
+from keras.preprocessing.image import ImageDataGenerator
+Define parameters and arguments for ImageDataGeneratior
+
+train_datagen=ImageDataGenerator(rescale=1./255,
+                                 shear_range=0.2,
+                                 rotation_range=180,
+                                 zoom_range=0.2,
+                                 horizontal_flip=True)
+test_datagen=ImageDataGenerator(rescale=1./255)
+Applying ImageDataGenerator
+
+x_test = test_datagen.flow_from_directory(r'/content/Dataset/Dataset/test_set',
+                                          target_size=(128,128),
+                                          batch_size=32,
+                                          class_mode='binary')
+Found 121 images belonging to 2 classes.
+x_train = train_datagen.flow_from_directory(r'/content/Dataset/Dataset/train_set',
+                                          target_size=(128,128),
+                                          batch_size=32,
+                                          class_mode='binary')
+Found 436 images belonging to 2 classes.
+Model building
+
+#import model building libraries
+
+#to define linear initialisation import sequential
+from keras.models import Sequential
+#to add layer import Dense
+from keras.layers import Dense
+#to create convolution kernel import convolution2D
+from keras.layers import Convolution2D
+#import Maxpooling layer
+from keras.layers import MaxPool2D
+#import flatten layer
+from keras.layers import Flatten
+import warnings
+warnings.filterwarnings('ignore')
+#initialize the model
+model=Sequential()
+from keras.layers.pooling.max_pooling2d import MaxPooling2D
+#add convolution layer
+model.add(Convolution2D(32,(3,3),input_shape=(128,128,3),activation='relu'))
+#add maxpooling layer
+model.add(MaxPooling2D(pool_size=(2,2)))
+#add flatten layer
+model.add(Flatten())
